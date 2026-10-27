@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Database Error{% endblock %}
+{% block content %}
+<div class="alert alert-danger">
+    <h1 class="h4">Database error</h1>
+    <p class="mb-0">{{ error }}</p>
+</div>
+<a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+{% endblock %}

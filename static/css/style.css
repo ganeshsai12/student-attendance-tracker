@@ -1,0 +1,12 @@
+body { background: #f6f8fb; color: #202735; }
+.navbar-brand { letter-spacing: .2px; }
+.stat-card {
+    background: #fff; border-radius: 14px; padding: 1.25rem;
+    box-shadow: 0 5px 18px rgba(30, 45, 70, .07);
+    border: 1px solid #e9edf3;
+}
+.stat-card span { display: block; color: #6c757d; font-size: .9rem; margin-bottom: .4rem; }
+.stat-card strong { font-size: 2rem; }
+.card { border-radius: 14px; }
+.table th { color: #6c757d; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+.form-check-input { width: 1.15rem; height: 1.15rem; }

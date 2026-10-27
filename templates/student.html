@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.full_name }} | Attendance Tracker{% endblock %}
+
+{% block content %}
+
+<!-- Student Details -->
+
+<div class="mb-4">
+    <a href="{{ url_for('reports') }}" class="text-decoration-none">
+        ← Back to Reports
+    </a>
+
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mt-2">
+    <div>
+        <h1 class="h3 fw-bold mb-1">{{ student.full_name }}</h1>
+        <p class="text-muted mb-0">
+            {{ student.roll_no }} • {{ student.course }} •
+            {{ student.email or 'No email' }}
+        </p>
+    </div>
+
+    <a href="{{ url_for('download_student_history', student_id=student.id) }}"
+       class="btn btn-success">
+        <i class="bi bi-download"></i> Download Report
+    </a>
+</div>
+
+
+</div>
+
+<!-- Attendance Summary -->
+
+<div class="row g-3 mb-4">
+
+
+<div class="col-md-3 col-6">
+    <div class="stat-card">
+        <span>Total Marked</span>
+        <strong>{{ total }}</strong>
+    </div>
+</div>
+
+<div class="col-md-3 col-6">
+    <div class="stat-card">
+        <span>Present</span>
+        <strong>{{ present }}</strong>
+    </div>
+</div>
+
+<div class="col-md-3 col-6">
+    <div class="stat-card">
+        <span>Absent</span>
+        <strong>{{ absent }}</strong>
+    </div>
+</div>
+
+<div class="col-md-3 col-6">
+    <div class="stat-card">
+        <span>Percentage</span>
+        <strong>{{ percentage }}%</strong>
+    </div>
+</div>
+
+
+</div>
+
+<!-- Attendance History -->
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+
+    <h2 class="h5 fw-bold mb-3">Attendance History</h2>
+
+    {% if history %}
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in history %}
+                <tr>
+                    <td>
+                        {{ row.attendance_date.strftime('%d %b %Y') }}
+                    </td>
+
+                    <td>
+                        <span class="badge text-bg-{{ 'success' if row.status == 'Present' else 'danger' }}">
+                            {{ row.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    {% else %}
+
+    <p class="text-muted mb-0">No attendance history.</p>
+
+    {% endif %}
+
+</div>
+
+
+</div>
+
+{% endblock %}

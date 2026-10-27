@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Reports | Attendance Tracker{% endblock %}
+
+{% block content %}
+
+<!-- Page Heading -->
+<div class="mb-4">
+    <h1 class="h3 fw-bold mb-1">Attendance Reports</h1>
+    <p class="text-muted mb-0">
+        Review attendance percentage for a date range.
+    </p>
+</div>
+
+<!-- Date Range Form -->
+<form class="card card-body shadow-sm border-0 mb-4"
+      method="get"
+      action="{{ url_for('reports') }}">
+
+    <div class="row g-3 align-items-end">
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">
+                From
+            </label>
+
+            <input
+                class="form-control"
+                type="date"
+                name="from_date"
+                value="{{ from_date }}"
+                max="{{ to_date }}"
+                required>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">
+                To
+            </label>
+
+            <input
+                class="form-control"
+                type="date"
+                name="to_date"
+                value="{{ to_date }}"
+                min="{{ from_date }}"
+                max="{{ date_today if date_today is defined else '' }}"
+                required>
+        </div>
+
+        <div class="col-md-4">
+            <button
+                type="submit"
+                name="download"
+                value="1"
+                class="btn btn-primary w-100">
+
+                Generate Report
+            </button>
+        </div>
+
+    </div>
+</form>
+
+<!-- Attendance Summary Table -->
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between
+                    align-items-center mb-3">
+
+            <h2 class="h5 fw-bold mb-0">
+                Attendance Summary
+            </h2>
+
+            <span class="badge bg-primary">
+                {{ summary|length }} Students
+            </span>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Student</th>
+                        <th>Marked</th>
+                        <th>Present</th>
+                        <th>Absent</th>
+                        <th>Percentage</th>
+                        <th>History</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for row in summary %}
+
+                    <tr>
+
+                        <td>{{ row.roll_no }}</td>
+
+                        <td>{{ row.full_name }}</td>
+
+                        <td>{{ row.total_marked }}</td>
+
+                        <td>
+                            <span class="text-success fw-semibold">
+                                {{ row.present_count }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="text-danger fw-semibold">
+                                {{ row.absent_count }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="fw-bold">
+                                {{ row.percentage }}%
+                            </span>
+                        </td>
+
+                        <td>
+                            <a
+                                class="btn btn-sm btn-outline-primary"
+                                href="{{ url_for(
+                                    'student_history',
+                                    student_id=row.id
+                                ) }}">
+                                History
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="7"
+                            class="text-center text-muted py-4">
+                            No student records found.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
